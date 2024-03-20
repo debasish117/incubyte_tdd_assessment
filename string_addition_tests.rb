@@ -11,7 +11,7 @@ class TestAddMethod < Minitest::Test
   end
 
   def test_add_with_three_numbers
-    assert_equal 7, add('3,4,''')
+  assert_equal 7, add('3,4,''')
   end
 
   def test_add_with_non_string_input
@@ -31,7 +31,10 @@ class TestAddMethod < Minitest::Test
   end
 
   def add(numbers)
+    numbers_array = numbers.split(',').map(&:to_i)
+    negatives = numbers_array.select { |num| num < 0 }
+    raise ArgumentError, "Negative numbers not allowed: #{negatives.join(', ')}" unless negatives.empty?
     raise ArgumentError if numbers.match?(/[^\d,]/) # raise an error if the string contains non-numeric characters/incorrect delimiter/negative numbers
-    numbers.split(',').map(&:to_i).reduce(0, :+)
+    numbers_array.reduce(0, :+)
   end
 end
