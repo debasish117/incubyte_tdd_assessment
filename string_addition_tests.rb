@@ -19,6 +19,7 @@ class TestAddMethod < Minitest::Test
   end
 
   def add(numbers)
+    raise ArgumentError if numbers.match?(/[^\d,]/) # raise an error if the string contains non-numeric characters
     numbers.split(',').map(&:to_i).reduce(0, :+)
   end
 end
