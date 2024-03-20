@@ -10,6 +10,10 @@ class TestAddMethod < Minitest::Test
     assert_equal 7, add('3,4')
   end
 
+  def test_add_with_three_numbers
+    assert_equal 7, add('3,4,''')
+  end
+
   def test_add_with_non_string_input
     assert_raises(NoMethodError) { add(123) }
   end
