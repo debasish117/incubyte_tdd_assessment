@@ -26,8 +26,12 @@ class TestAddMethod < Minitest::Test
     assert_raises(ArgumentError) { add('3 4') }
   end
 
+  def test_add_with_negative_numbers
+    assert_raises(ArgumentError) { add('3,-4') }
+  end
+
   def add(numbers)
-    raise ArgumentError if numbers.match?(/[^\d,]/) # raise an error if the string contains non-numeric characters
+    raise ArgumentError if numbers.match?(/[^\d,]/) # raise an error if the string contains non-numeric characters/incorrect delimiter/negative numbers
     numbers.split(',').map(&:to_i).reduce(0, :+)
   end
 end
