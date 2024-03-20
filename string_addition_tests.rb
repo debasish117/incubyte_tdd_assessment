@@ -14,6 +14,10 @@ class TestAddMethod < Minitest::Test
     assert_raises(NoMethodError) { add(123) }
   end
 
+  def test_add_with_non_numeric_characters
+    assert_raises(ArgumentError) { add('3,a') }
+  end
+
   def add(numbers)
     numbers.split(',').map(&:to_i).reduce(0, :+)
   end
