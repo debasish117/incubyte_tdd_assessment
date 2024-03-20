@@ -22,6 +22,10 @@ class TestAddMethod < Minitest::Test
     assert_raises(ArgumentError) { add('3,a') }
   end
 
+  def test_add_with_incorrect_delimiter
+    assert_raises(ArgumentError) { add('3 4') }
+  end
+
   def add(numbers)
     raise ArgumentError if numbers.match?(/[^\d,]/) # raise an error if the string contains non-numeric characters
     numbers.split(',').map(&:to_i).reduce(0, :+)
