@@ -7,12 +7,12 @@ def add(numbers)
   end
 
   numbers_array = numbers.split(/#{delimiter}/).map(&:to_i)
-  negatives = numbers_array.select { |num| num < 0 }
+  negatives = numbers_array.select(&:negative?)
   raise ArgumentError, "Negative numbers not allowed: #{negatives.join(', ')}" if negatives.any?
-  raise ArgumentError if numbers.match?(/[^\d#{delimiter}]/) # raise an error if the string contains non-numeric characters/incorrect delimiter/negative numbers
-  numbers_array.reduce(0, :+)
+  raise ArgumentError, "String contains non-numeric characters or incorrect delimiter" if numbers.match?(/[^\d#{delimiter}]/) # raise an error if the string contains non-numeric characters/incorrect delimiter
+  numbers_array.sum
 rescue ArgumentError => e
   puts e.message
 end
 
-# puts "#{add("//;\n1;2;-3;-4;5;-6")}"
+puts "#{add("//;\n1;2;3;4;5;6")}"

@@ -53,7 +53,7 @@ class TestAddMethod < Minitest::Test
     numbers_array = numbers.split(/#{delimiter}/).map(&:to_i)
     negatives = numbers_array.select { |num| num < 0 }
     raise ArgumentError, "Negative numbers not allowed: #{negatives.join(', ')}" if negatives.any?
-    raise ArgumentError if numbers.match?(/[^\d#{delimiter}]/) # raise an error if the string contains non-numeric characters/incorrect delimiter/negative numbers
+    raise ArgumentError, "String contains non-numeric characters or incorrect delimiter" if numbers.match?(/[^\d#{delimiter}]/) # raise an error if the string contains non-numeric characters/incorrect delimiter
     numbers_array.reduce(0, :+)
   end
 end
