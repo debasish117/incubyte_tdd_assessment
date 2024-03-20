@@ -1,5 +1,4 @@
 require 'minitest/autorun'
-# require_relative 'your_file' # replace 'your_file' with the actual file name where your add method is defined
 
 class TestAddMethod < Minitest::Test
   def test_add_with_empty_string
@@ -30,11 +29,15 @@ class TestAddMethod < Minitest::Test
     assert_raises(ArgumentError) { add('3,-4') }
   end
 
+  def test_add_with_newline_delimiter
+    assert_equal 6, add("1\n2,3")
+  end
+
   def add(numbers)
-    numbers_array = numbers.split(',').map(&:to_i)
+    numbers_array = numbers.split(/[\n,]/).map(&:to_i)
     negatives = numbers_array.select { |num| num < 0 }
     raise ArgumentError, "Negative numbers not allowed: #{negatives.join(', ')}" unless negatives.empty?
-    raise ArgumentError if numbers.match?(/[^\d,]/) # raise an error if the string contains non-numeric characters/incorrect delimiter/negative numbers
+    raise ArgumentError if numbers.match?(/[^\d,\n]/) # raise an error if the string contains non-numeric characters/incorrect delimiter/negative numbers
     numbers_array.reduce(0, :+)
   end
 end
