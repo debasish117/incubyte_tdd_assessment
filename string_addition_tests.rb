@@ -7,6 +7,6 @@ class TestAddMethod < Minitest::Test
   end
 
   def add(numbers)
-    # add logic here
+    numbers.split(',').map(&:to_i).reduce(0, :+)
   end
 end
