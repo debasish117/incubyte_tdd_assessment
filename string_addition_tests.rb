@@ -36,12 +36,24 @@ class TestAddMethod < Minitest::Test
     assert_raises(ArgumentError) { add(",\n,3") }
   end
 
+  def test_add_with_custom_delimiter
+    assert_equal 6, add("//;\n1;2;3")
+    assert_equal 10, add("//|\n1|2|3|4")
+    assert_raises(ArgumentError) { add("//|\n1|2|3|-4") }
+  end
+
   def add(numbers)
     raise ArgumentError, "Invalid format" if numbers.include?(",\n") || numbers.include?("\n,")
-    numbers_array = numbers.split(/[\n,]/).map(&:to_i)
+    delimiter = ",|\n"
+    if numbers.start_with?("//")
+      delimiter, numbers = numbers[2..-1].split("\n")
+      delimiter = Regexp.escape(delimiter)
+    end
+
+    numbers_array = numbers.split(/#{delimiter}/).map(&:to_i)
     negatives = numbers_array.select { |num| num < 0 }
-    raise ArgumentError, "Negative numbers not allowed: #{negatives.join(', ')}" unless negatives.empty?
-    raise ArgumentError if numbers.match?(/[^\d,\n]/) # raise an error if the string contains non-numeric characters/incorrect delimiter/negative numbers
+    raise ArgumentError, "Negative numbers not allowed: #{negatives.join(', ')}" if negatives.any?
+    raise ArgumentError if numbers.match?(/[^\d#{delimiter}]/) # raise an error if the string contains non-numeric characters/incorrect delimiter/negative numbers
     numbers_array.reduce(0, :+)
   end
 end
