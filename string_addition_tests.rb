@@ -6,6 +6,10 @@ class TestAddMethod < Minitest::Test
     assert_equal 0, add('')
   end
 
+  def test_add_with_two_numbers
+    assert_equal 7, add('3,4')
+  end
+
   def add(numbers)
     numbers.split(',').map(&:to_i).reduce(0, :+)
   end
